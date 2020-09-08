@@ -1,3 +1,4 @@
+
 package com.example.TransitApp;
 
 import org.springframework.boot.SpringApplication;
@@ -18,8 +19,5 @@ public class TransitAppApplication {
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
 	}
-
-
-
 
 }
