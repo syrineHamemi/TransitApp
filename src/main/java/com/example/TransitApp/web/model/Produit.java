@@ -1,38 +1,49 @@
 package com.example.TransitApp.web.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Produit {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long produit_id;
     private String reference;
     private String designation;
-    private double prix;
+    private Double tva;
+    @ManyToOne
+    public commande commande;
 
+   @OneToMany(mappedBy = "produit")
+   Set<fournir> fournirs;
 
 
     public Produit() {
 
     }
 
-    public Produit(int id, String reference, String designation, double prix) {
-        this.id = id;
+    public Produit(Long produit_id, String reference, String designation, Double tva) {
+        this.produit_id = produit_id;
         this.reference = reference;
         this.designation = designation;
-        this.prix = prix;
+        this.tva = tva;
     }
 
-    public int getId() {
-        return id;
+    public Double getTva() {
+        return tva;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTva(Double tva) {
+        this.tva = tva;
+    }
+
+    public Long getProduit_id() {
+        return produit_id;
+    }
+
+    public void setProduit_id(Long produit_id) {
+        this.produit_id = produit_id;
     }
 
     public String getReference() {
@@ -51,11 +62,5 @@ public class Produit {
         this.designation = designation;
     }
 
-    public double getPrix() {
-        return prix;
-    }
 
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
 }

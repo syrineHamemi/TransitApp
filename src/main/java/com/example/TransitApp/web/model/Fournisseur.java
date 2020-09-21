@@ -1,19 +1,21 @@
 package com.example.TransitApp.web.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Fournisseur {
         @Id
         @GeneratedValue
-        private Long id;
+        private Long fournisseur_id;
         private String name;
 
-    public Fournisseur(Long id, String name) {
-        super();
-        this.id = id;
+        @OneToMany(mappedBy = "fournisseur")
+        Set<fournir> fournirs;
+
+
+    public Fournisseur(Long fournisseur_id, String name) {
+        this.fournisseur_id = fournisseur_id;
         this.name = name;
     }
 
@@ -21,12 +23,13 @@ public class Fournisseur {
         super();
     }
 
-    public Long getId() {
-        return id;
+
+    public Long getFournisseur_id() {
+        return fournisseur_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setFournisseur_id(Long fournisseur_id) {
+        this.fournisseur_id = fournisseur_id;
     }
 
     public String getName() {
@@ -40,7 +43,7 @@ public class Fournisseur {
     @Override
     public String toString(){
         return "Fournisseur{"+
-                "id=" + id +
+                "id=" + fournisseur_id +
                 ", nom='"+ name ;
     }
 }

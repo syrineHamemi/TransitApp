@@ -25,34 +25,34 @@ public class FournisseurController {
             }
 
 
-@GetMapping("/fournisseur/{id}")
+    @GetMapping("/fournisseur/{id}")
     public Fournisseur retrieveFournissuer (@PathVariable Long id) throws FournissurNotFoundException {
     Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
 
     if (!fournisseur.isPresent())
         throw new FournissurNotFoundException("id-"+id);
     return fournisseur.get();
-}
+    }
 
-@DeleteMapping("fournisseur/{id}")
+    @DeleteMapping("fournisseur/{id}")
     public void deleteFournisseur(@PathVariable Long id ){
         fournisseurRepository.deleteById(id);
 }
 
-@PostMapping("/fournisseurs")
+    @PostMapping("/fournisseurs")
     public ResponseEntity<Object> createFournissuer (@RequestBody Fournisseur fournisseur){
         Fournisseur saveFournisseur = (Fournisseur) fournisseurRepository.save(fournisseur);
 
-    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveFournisseur.getId()).toUri();
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveFournisseur.getFournisseur_id()).toUri();
     return ResponseEntity.created(location).build();
-}
+    }
 
-@PutMapping("/fournisseur/{id}")
+    @PutMapping("/fournisseur/{id}")
     public ResponseEntity<Object> updateFournisseur(@RequestBody Fournisseur fournisseur, @PathVariable Long id){
         Optional<Fournisseur> fournisseurOptional=fournisseurRepository.findById(id);
         if (!fournisseurOptional.isPresent())
             return ResponseEntity.notFound().build();
-        fournisseur.setId(id);
+        fournisseur.setFournisseur_id(id);
         fournisseurRepository.save(fournisseur);
 
         return ResponseEntity.noContent().build();
