@@ -18,14 +18,14 @@ public class FournisseurController {
 
     @Autowired
     private FournisseurRepository fournisseurRepository;
-
+    @CrossOrigin(origins = "http://localhost:7896")
     @GetMapping("/fournisseurs")
             public List retreiveAllFournissuers(){
                 return fournisseurRepository.findAll();
             }
 
 
-    @GetMapping("/fournisseur/{id}")
+    @GetMapping("/fournisseurs/{id}")
     public Fournisseur retrieveFournissuer (@PathVariable Long id) throws FournissurNotFoundException {
     Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
 
@@ -34,7 +34,7 @@ public class FournisseurController {
     return fournisseur.get();
     }
 
-    @DeleteMapping("fournisseur/{id}")
+    @DeleteMapping("fournisseurs/{id}")
     public void deleteFournisseur(@PathVariable Long id ){
         fournisseurRepository.deleteById(id);
 }
@@ -47,7 +47,7 @@ public class FournisseurController {
     return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/fournisseur/{id}")
+    @PutMapping("/fournisseurs/{id}")
     public ResponseEntity<Object> updateFournisseur(@RequestBody Fournisseur fournisseur, @PathVariable Long id){
         Optional<Fournisseur> fournisseurOptional=fournisseurRepository.findById(id);
         if (!fournisseurOptional.isPresent())
