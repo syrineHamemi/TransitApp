@@ -1,9 +1,7 @@
 package com.example.TransitApp.web.controller;
 
-import com.example.TransitApp.web.Exception.FournissurNotFoundException;
-import com.example.TransitApp.web.model.Produit;
+import com.example.TransitApp.web.Exception.ApiExceptionHandler;
 import com.example.TransitApp.web.model.transporteur;
-import com.example.TransitApp.web.repository.ProduitRepository;
 import com.example.TransitApp.web.repository.TransporteurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +27,11 @@ public class TransporteurController {
 
 
     @GetMapping("/transporteur/{id}")
-    public transporteur retrieveTransporteur (@PathVariable Long id) throws FournissurNotFoundException {
+    public transporteur retrieveTransporteur(@PathVariable Long id) throws ApiExceptionHandler {
         Optional<transporteur> transporteur = transporteurRepository.findById(id);
 
         if (!transporteur.isPresent())
-            throw new FournissurNotFoundException("id-"+id);
+            throw new ApiExceptionHandler("id-" + id);
         return transporteur.get();
     }
 
@@ -44,9 +42,9 @@ public class TransporteurController {
 
     @PostMapping("/transporteur")
     public ResponseEntity<Object> createProduit(@RequestBody transporteur transporteur){
-        transporteur saveTransporteur = (transporteur) transporteurRepository.save(transporteur);
+        transporteur saveTransporteur = transporteurRepository.save(transporteur);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveTransporteur.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveTransporteur.getTransporteur_id()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -55,7 +53,7 @@ public class TransporteurController {
         Optional<transporteur> transporteurOptional=transporteurRepository.findById(id);
         if (!transporteurOptional.isPresent())
             return ResponseEntity.notFound().build();
-        transporteur.setId(id);
+        transporteur.setTransporteur_id(id);
         transporteurRepository.save(transporteur);
 
         return ResponseEntity.noContent().build();

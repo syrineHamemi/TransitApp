@@ -1,11 +1,11 @@
 package com.example.TransitApp.web.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.Date;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 
@@ -13,35 +13,41 @@ public class commande {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long commande_id;
     private double remise;
     private int Quantite;
     private int numeroCmd;
-    private Date date;
+    private LocalDate date;
+    private String status;
 
-    @OneToMany(mappedBy = "commande")
-    private Set <Produit> produits;
+    @JsonManagedReference
+    @OneToMany()
+    private List<CommandeProduits> orderProducts = new ArrayList<>();
 
+    @ManyToOne()
+    @JoinColumn(name = "transporteur_id", nullable = false, referencedColumnName = "transporteur_id")
+    private transporteur transporteur;
 
     public commande() {
     }
 
-
-    public commande(Long id, double remise, int quantite, int numeroCmd, Date date, Set<Produit> produits) {
-        this.id = id;
+    public commande(Long commande_id, double remise, int quantite, int numeroCmd, LocalDate date, String status, List<CommandeProduits> orderProducts, com.example.TransitApp.web.model.transporteur transporteur) {
+        this.commande_id = commande_id;
         this.remise = remise;
         Quantite = quantite;
         this.numeroCmd = numeroCmd;
         this.date = date;
-        this.produits = produits;
+        this.status = status;
+        this.orderProducts = orderProducts;
+        this.transporteur = transporteur;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCommande_id() {
+        return commande_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCommande_id(Long commande_id) {
+        this.commande_id = commande_id;
     }
 
     public double getRemise() {
@@ -68,19 +74,35 @@ public class commande {
         this.numeroCmd = numeroCmd;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Set<Produit> getProduits() {
-        return produits;
+    public String getStatus() {
+        return status;
     }
 
-    public void setProduits(Set<Produit> produits) {
-        this.produits = produits;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<CommandeProduits> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<CommandeProduits> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
+    public com.example.TransitApp.web.model.transporteur getTransporteur() {
+        return transporteur;
+    }
+
+    public void setTransporteur(com.example.TransitApp.web.model.transporteur transporteur) {
+        this.transporteur = transporteur;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.TransitApp.web.controller;
 
-import com.example.TransitApp.web.Exception.FournissurNotFoundException;
+import com.example.TransitApp.web.Exception.ApiExceptionHandler;
 import com.example.TransitApp.web.model.commande;
 import com.example.TransitApp.web.repository.CommandeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +20,18 @@ public class CommandeController {
     private CommandeRepository commandeRepository;
 
     @GetMapping("/commandes")
+    @CrossOrigin(origins = "http://localhost:7896")
     public List retreiveAllCommandes(){
         return commandeRepository.findAll();
     }
 
 
     @GetMapping("/commande/{id}")
-    public commande retrieveCommande (@PathVariable Long id) throws FournissurNotFoundException {
+    public commande retrieveCommande(@PathVariable Long id) throws ApiExceptionHandler {
         Optional<commande> commande = commandeRepository.findById(id);
 
         if (!commande.isPresent())
-            throw new FournissurNotFoundException("id-"+id);
+            throw new ApiExceptionHandler("id-" + id);
         return commande.get();
     }
 
@@ -41,9 +42,9 @@ public class CommandeController {
 
     @PostMapping("/commandes")
     public ResponseEntity<Object> createCommande (@RequestBody commande commande){
-        commande saveCommande = (commande) commandeRepository.save(commande);
+        commande saveCommande = commandeRepository.save(commande);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveCommande.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveCommande.getCommande_id()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -52,10 +53,12 @@ public class CommandeController {
         Optional<commande> commandeOptional=commandeRepository.findById(id);
         if (!commandeOptional.isPresent())
             return ResponseEntity.notFound().build();
-        commande.setId(id);
+        commande.setCommande_id(id);
         commandeRepository.save(commande);
 
         return ResponseEntity.noContent().build();
 
     }
+
+
 }

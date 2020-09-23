@@ -1,44 +1,42 @@
 package com.example.TransitApp.web.model;
 
-import com.mysql.jdbc.log.Log;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 public class transporteur {
 
     @Id
     @GeneratedValue
-    private Long id ;
+    private Long transporteur_id;
     private String name;
     private String contact;
     private String mail;
     private String address;
     private String MF;
-    @OneToOne(mappedBy = "transporteur")
-    private Livraison livraison ;
 
-    public transporteur() {
-    }
+    @OneToMany(mappedBy = "transporteur")
+    private Set<commande> commande;
 
-    public transporteur(Long id, String name, String contact, String mail, String address, String MF) {
-        this.id = id;
+    public transporteur(Long transporteur_id, String name, String contact, String mail, String address, String MF, Set<com.example.TransitApp.web.model.commande> commande) {
+        this.transporteur_id = transporteur_id;
         this.name = name;
         this.contact = contact;
         this.mail = mail;
         this.address = address;
         this.MF = MF;
+        this.commande = commande;
     }
 
-    public Long getId() {
-        return id;
+    public Long getTransporteur_id() {
+        return transporteur_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTransporteur_id(Long transporteur_id) {
+        this.transporteur_id = transporteur_id;
     }
 
     public String getName() {
@@ -79,5 +77,13 @@ public class transporteur {
 
     public void setMF(String MF) {
         this.MF = MF;
+    }
+
+    public Set<com.example.TransitApp.web.model.commande> getCommande() {
+        return commande;
+    }
+
+    public void setCommande(Set<com.example.TransitApp.web.model.commande> commande) {
+        this.commande = commande;
     }
 }

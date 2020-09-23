@@ -1,6 +1,9 @@
 package com.example.TransitApp.web.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
@@ -12,31 +15,28 @@ public class Produit {
     private String reference;
     private String designation;
     private Double tva;
-    @ManyToOne
-    public commande commande;
+    private Double price;
+    private String pictureUrl;
 
-   @OneToMany(mappedBy = "produit")
-   Set<fournir> fournirs;
+
+    @OneToMany(mappedBy = "produit")
+    Set<fournir> fournirs;
 
 
     public Produit() {
 
     }
 
-    public Produit(Long produit_id, String reference, String designation, Double tva) {
+    public Produit(Long produit_id, String reference, String designation, Double tva, Double price, String pictureUrl, Set<fournir> fournirs) {
         this.produit_id = produit_id;
         this.reference = reference;
         this.designation = designation;
         this.tva = tva;
+        this.price = price;
+        this.pictureUrl = pictureUrl;
+        this.fournirs = fournirs;
     }
 
-    public Double getTva() {
-        return tva;
-    }
-
-    public void setTva(Double tva) {
-        this.tva = tva;
-    }
 
     public Long getProduit_id() {
         return produit_id;
@@ -62,5 +62,35 @@ public class Produit {
         this.designation = designation;
     }
 
+    public Double getTva() {
+        return tva;
+    }
 
+    public void setTva(Double tva) {
+        this.tva = tva;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public Set<fournir> getFournirs() {
+        return fournirs;
+    }
+
+    public void setFournirs(Set<fournir> fournirs) {
+        this.fournirs = fournirs;
+    }
 }

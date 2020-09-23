@@ -1,5 +1,5 @@
 package com.example.TransitApp.web.controller;
-import com.example.TransitApp.web.Exception.FournissurNotFoundException;
+import com.example.TransitApp.web.Exception.ApiExceptionHandler;
 import com.example.TransitApp.web.model.Fournisseur;
 import com.example.TransitApp.web.repository.FournisseurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ public class FournisseurController {
     @Autowired
     private FournisseurRepository fournisseurRepository;
     @CrossOrigin(origins = "http://localhost:7896")
+    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/fournisseurs")
             public List retreiveAllFournissuers(){
                 return fournisseurRepository.findAll();
@@ -26,12 +27,12 @@ public class FournisseurController {
 
 
     @GetMapping("/fournisseurs/{id}")
-    public Fournisseur retrieveFournissuer (@PathVariable Long id) throws FournissurNotFoundException {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
+    public Fournisseur retrieveFournissuer(@PathVariable Long id) throws ApiExceptionHandler {
+        Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
 
-    if (!fournisseur.isPresent())
-        throw new FournissurNotFoundException("id-"+id);
-    return fournisseur.get();
+        if (!fournisseur.isPresent())
+            throw new ApiExceptionHandler("id-" + id);
+        return fournisseur.get();
     }
 
     @DeleteMapping("fournisseurs/{id}")
@@ -41,7 +42,7 @@ public class FournisseurController {
 
     @PostMapping("/fournisseurs")
     public ResponseEntity<Object> createFournissuer (@RequestBody Fournisseur fournisseur){
-        Fournisseur saveFournisseur = (Fournisseur) fournisseurRepository.save(fournisseur);
+        Fournisseur saveFournisseur = fournisseurRepository.save(fournisseur);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saveFournisseur.getFournisseur_id()).toUri();
     return ResponseEntity.created(location).build();
